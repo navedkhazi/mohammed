@@ -58,10 +58,10 @@ jobs:
           run: |
                pwd
                ls -ltr 
-        - name: download a single artifact
+        - name: download a single file artifact
           uses: actions/download-artifact@v4
           with:
-            name: single file
+            name: single_file
         - name: checking current directory post download
           run: |
                pwd

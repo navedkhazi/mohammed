@@ -24,7 +24,7 @@ jobs:
           echo pwd >> myartifact.txt
           mkdir artifact
           echo 'ls -ltr' >> artifact/list.txt
-          echo 'hostname' >> artifact/host.txt
+          echo 'hostname' >> artifact/hostname.txt
       - name: steps3 uplaod artifact
         uses: actions/upload-artifact@v4
         with:

@@ -52,6 +52,7 @@ jobs:
               !**/hostname.txt
   job2:
     name: job2
+    needs: job1
     runs-on: ubuntu-latest
     steps:
         - name: checking current directory
@@ -66,6 +67,24 @@ jobs:
           run: |
                pwd
                ls -ltr      
+     
+  job3:
+    name: job3
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+        - name: checking current directory
+          run: |
+               pwd
+               ls -ltr 
+        - name: download directory
+          uses: actions/download-artifact@v5.0.0
+          with:
+            name: directory-aftifact
+        - name: checking current directory post download
+          run: |
+               pwd
+               ls -ltr            
                  
       
         

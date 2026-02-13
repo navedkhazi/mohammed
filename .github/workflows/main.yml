@@ -5,9 +5,7 @@ name: my-first-workflow
 on:
   push: 
   workflow_dispatch: 
-  schedule:
-    - cron: '*/5 * * * *'
-
+  
 
 jobs:
   job1:

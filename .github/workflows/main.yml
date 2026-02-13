@@ -13,14 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: step1
-        run: 
+        run: |
           pwd
           ls -ltr
           hostname
       - name: step2 - checkout
         uses: actions/checkout@v6.0.2
       - name: step3
-        run: 
+        run: |
           pwd
           ls -ltr
           hostname

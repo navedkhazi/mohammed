@@ -36,14 +36,14 @@ jobs:
            name: directory-aftifact
            path: artifact/
       - name: upload from multiple paths
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5.0.0
         with:
             name: multiple path
             path: |
               ./myartifact.txt
               artifact/
       - name: upload from multiple paths with exclusion
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5.0.0
         with:
             name: multiple path with exclusion
             path: |
@@ -59,7 +59,7 @@ jobs:
                pwd
                ls -ltr 
         - name: download a single file artifact
-          uses: actions/download-artifact@v4
+          uses: actions/download-artifact@v5.0.0
           with:
             name: single_file
         - name: checking current directory post download

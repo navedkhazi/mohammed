@@ -25,10 +25,10 @@ jobs:
           mkdir artifact
           echo 'ls -ltr' >> artifact/list.txt
           echo 'hostname' >> artifact/hostname.txt
-      - name: steps3 uplaod artifact
+      - name: uplaod single file
         uses: actions/upload-artifact@v4
         with:
-          name: single artifact
+          name: single_file
           path: ./myartifact.txt
       - name: upload from directory   
         uses: actions/upload-artifact@v4

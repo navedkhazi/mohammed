@@ -64,6 +64,18 @@ jobs:
          - name: Referring Repo secret
            run: |
                echo " {INFP} Application password is ${{ secrets.APP_PASSWORD}}"
+
+  job3:
+      name: job3
+      runs-on: ubuntu-latest
+      steps:
+         - name: Referring in-built variables
+           run: |
+               echo "{INFO} Triggered by ${{ github.event_name}}"
+               echo "{INFO} new changes are added by ${{ github.actor_name }} in ${{github.ref_name }} branch".
+               echo "{INFO} Current step is running on ${{ runner.os}}".
+               echo "{INFO} current job id is ${{ jobs.check_run_id}}".
+      
              
                  
       

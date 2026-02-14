@@ -77,7 +77,7 @@ jobs:
                echo "{INFO} current job id is ${{ job.check_run_id}}".
       
              
-  staging:
+staging:
       name: STAGE DEPLOYMENT
       runs-on: ubuntu-latest
       steps:
@@ -92,7 +92,7 @@ jobs:
 
        
 
-   PRODUCTION:
+production:
       name: PRODUCTION DEPLOYMENT
       runs-on: ubuntu-latest
       steps:

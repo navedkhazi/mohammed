@@ -77,7 +77,33 @@ jobs:
                echo "{INFO} current job id is ${{ job.check_run_id}}".
       
              
-                 
+  staging:
+      name: STAGE DEPLOYMENT
+      runs-on: ubuntu-latest
+      steps:
+        - name: referring env variable
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER}}".
+        - name: Refferring env secrets
+          run: echo "{INFO} password for ${{ vars.USER}}" IS ${{ vars.PASSWORD}}".
+          
+  environment:
+         name: STAGING
+
+
+       
+
+   PRODUCTION:
+      name: PRODUCTION DEPLOYMENT
+      runs-on: ubuntu-latest
+      steps:
+        - name: referring env variable
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER}}".
+        - name: Refferring env secrets
+          run: echo "{INFO} password for ${{ vars.USER}}" IS ${{ vars.PASSWORD}}".
+          
+  environment:
+         name: PRODUCTION
+     
       
         
   

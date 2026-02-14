@@ -1,10 +1,14 @@
 name: my-first-workflow
 
-# to get triggered on every push in this repo on any branch
+# to get triggered on every push in this repo on any branch  
 
 on:
   push: 
-  workflow_dispatch: 
+    branches: 
+        - main
+  pull_request: 
+    branches:
+        - main
   
 
 jobs:
@@ -30,26 +34,7 @@ jobs:
         with:
           name: single_file
           path: ./myartifact.txt
-      - name: upload from directory   
-        uses: actions/upload-artifact@v4
-        with:
-           name: directory-aftifact
-           path: artifact/
-      - name: upload from multiple paths
-        uses: actions/upload-artifact@v5.0.0
-        with:
-            name: multiple path
-            path: |
-              ./myartifact.txt
-              artifact/
-      - name: upload from multiple paths with exclusion
-        uses: actions/upload-artifact@v5.0.0
-        with:
-            name: multiple path with exclusion
-            path: |
-              ./myartifact.txt
-              artifact/       
-              !**/hostname.txt
+    
   job2:
     name: job2
     needs: job1
@@ -66,25 +51,11 @@ jobs:
         - name: checking current directory post download
           run: |
                pwd
-               ls -ltr      
+               ls -ltr   
+        - name: step for PR demo
+          run: exit 0
      
-  job3:
-    name: job3
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-        - name: checking current directory
-          run: |
-               pwd
-               ls -ltr 
-        - name: download directory
-          uses: actions/download-artifact@v5.0.0
-          with:
-            name: directory-aftifact
-        - name: checking current directory post download
-          run: |
-               pwd
-               ls -ltr            
+             
                  
       
         

@@ -56,11 +56,14 @@ jobs:
            with:
              name: single_file
 
-         - name: referring the env variable
+         - name: referring env variable
            run: |
                echo "{INFO} running deployment for $ENV_TYPE for user $APP_USER"
-               echo "{INFO} once deployed application is accessable on $APP_PORT"
-     
+               echo "{INFO} once deployed application is accessable on $APP_PORT"      
+         
+         - name: Referring Repo secret
+           run: |
+               echo " {INFP} Application password is ${{ secrets.APP_PASSWORD}}"
              
                  
       

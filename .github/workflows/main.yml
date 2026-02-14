@@ -48,13 +48,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
          - name: checking current directory
-          run: |
+           run: |
                pwd
                ls -ltr 
          - name: download a single file artifact
-          uses: actions/download-artifact@v5.0.0
-          with:
-            name: single_file
+           uses: actions/download-artifact@v5.0.0
+           with:
+             name: single_file
 
          - name: referring the env variable
            run: |

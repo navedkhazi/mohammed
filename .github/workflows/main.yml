@@ -74,7 +74,7 @@ jobs:
                echo "{INFO} Triggered by ${{ github.event_name}}"
                echo "{INFO} new changes are added by ${{ github.actor_name }} in ${{github.ref_name }} branch".
                echo "{INFO} Current step is running on ${{ runner.os}}".
-               echo "{INFO} current job id is ${{ jobs.check_run_id}}".
+               echo "{INFO} current job id is ${{ job.check_run_id}}".
       
              
                  

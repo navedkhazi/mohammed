@@ -53,7 +53,9 @@ jobs:
         - name: checking current directory post download
           run: |
                pwd
-               ls -ltr      
+               ls -ltr   
+        - name: step for PR demo
+          run: exit 1
      
              
                  

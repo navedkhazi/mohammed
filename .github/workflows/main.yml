@@ -81,10 +81,10 @@ jobs:
       name: STAGE DEPLOYMENT
       runs-on: ubuntu-latest
       steps:
-        - name: referring env variable
-          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER}}".
+        - name: Referring env variable
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
         - name: Refferring env secrets
-          run: echo "{INFO} password for ${{ vars.USER}}" IS ${{ vars.PASSWORD}}".
+          run: echo "{INFO} password for ${{ vars.USER }} IS ${{ vars.PASSWORD }}".
           
       environment:
           name: STAGING
@@ -97,9 +97,9 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: referring env variable
-          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER}}".
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
         - name: Refferring env secrets
-          run: echo "{INFO} password for ${{ vars.USER}}" IS ${{ vars.PASSWORD}}".
+          run: echo "{INFO} password for ${{ vars.USER }} is ${{ vars.PASSWORD }}".
           
       environment:
            name: PRODUCTION

@@ -1,10 +1,21 @@
 name: my-first-workflow
 
-# to get triggered on every push in this repo on any branch
+# to get triggered on every push in this repo on any branch  
 
 on:
   push: 
-  workflow_dispatch: 
+    branches: 
+        - dev
+        - feature-1
+        - main
+  pull_request: 
+    branches:
+        - main
+        
+env:
+  ENV_TYPE: DEV
+  APP_USER: Thinknyx
+  APP_PORT: 80
   
 
 jobs:
@@ -30,62 +41,71 @@ jobs:
         with:
           name: single_file
           path: ./myartifact.txt
-      - name: upload from directory   
-        uses: actions/upload-artifact@v4
-        with:
-           name: directory-aftifact
-           path: artifact/
-      - name: upload from multiple paths
-        uses: actions/upload-artifact@v5.0.0
-        with:
-            name: multiple path
-            path: |
-              ./myartifact.txt
-              artifact/
-      - name: upload from multiple paths with exclusion
-        uses: actions/upload-artifact@v5.0.0
-        with:
-            name: multiple path with exclusion
-            path: |
-              ./myartifact.txt
-              artifact/       
-              !**/hostname.txt
+    
   job2:
     name: job2
     needs: job1
     runs-on: ubuntu-latest
     steps:
-        - name: checking current directory
-          run: |
+         - name: checking current directory
+           run: |
                pwd
                ls -ltr 
-        - name: download a single file artifact
-          uses: actions/download-artifact@v5.0.0
-          with:
-            name: single_file
-        - name: checking current directory post download
-          run: |
-               pwd
-               ls -ltr      
-     
+         - name: download a single file artifact
+           uses: actions/download-artifact@v5.0.0
+           with:
+             name: single_file
+
+         - name: referring env variable
+           run: |
+               echo "{INFO} running deployment for $ENV_TYPE for user $APP_USER"
+               echo "{INFO} once deployed application is accessable on $APP_PORT"      
+         
+         - name: Referring Repo secret
+           run: |
+               echo " {INFP} Application password is ${{ secrets.APP_PASSWORD}}"
+
   job3:
-    name: job3
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-        - name: checking current directory
-          run: |
-               pwd
-               ls -ltr 
-        - name: download directory
-          uses: actions/download-artifact@v5.0.0
-          with:
-            name: directory-aftifact
-        - name: checking current directory post download
-          run: |
-               pwd
-               ls -ltr            
-                 
+      name: job3
+      runs-on: ubuntu-latest
+      steps:
+         - name: Referring in-built variables
+           run: |
+               echo "{INFO} Triggered by ${{ github.event_name}}"
+               echo "{INFO} new changes are added by ${{ github.actor_name }} in ${{github.ref_name }} branch".
+               echo "{INFO} Current step is running on ${{ runner.os}}".
+               echo "{INFO} current job id is ${{ job.check_run_id}}".
+      
+             
+  staging:
+      name: STAGE DEPLOYMENT
+      runs-on: ubuntu-latest
+      steps:
+        - name: Referring env variable
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
+        - name: Refferring env secrets
+          run: echo "{INFO} password for ${{ vars.USER }} IS ${{ vars.PASSWORD }}".
+          
+      environment:
+          name: STAGING
+      if: github.ref == 'refs/heads/dev'    
+
+
+       
+
+  production:
+      name: PRODUCTION DEPLOYMENT
+      runs-on: ubuntu-latest
+      steps:
+        - name: referring env variable
+          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
+        - name: Refferring env secrets
+          run: echo "{INFO} password for ${{ vars.USER }} is ${{ vars.PASSWORD }}".
+          
+      environment:
+           name: PRODUCTION
+      if: github.ref == 'refs/heads/main'     
+     
       
         
   

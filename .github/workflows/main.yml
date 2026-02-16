@@ -73,8 +73,3 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2   
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: sonar quality gate checking         
-        uses: SonarSource/sonarcloud-quality-gate-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

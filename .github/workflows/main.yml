@@ -53,10 +53,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6.0.2   
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2.0.0
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
       - name: perform CodeQL analysis
-        uses: github/codeql-action/analyze@v2.0.0
+        uses: github/codeql-action/analyze@v3
         with:
           category: "security" 

@@ -1,6 +1,7 @@
 name: my-first-workflow
 
 # to get triggered on every push in this repo on any branch  
+# python app in dev
 
 on:
   push: 
@@ -12,100 +13,50 @@ on:
     branches:
         - main
         
-env:
-  ENV_TYPE: DEV
-  APP_USER: Thinknyx
-  APP_PORT: 80
-  
-
 jobs:
-  job1:
-    name: job1
+  unit-tests:
+    name: running unit tests
     runs-on: ubuntu-latest
     steps:
-      - name: step1
-        run: |
-          pwd
-          ls -ltr
-          hostname
-      - name: step2 - checkout
-        uses: actions/checkout@v5.0.0
-      - name: step3
-        run: |
-          echo 'pwd' >> myartifact.txt
-          mkdir artifact
-          echo 'ls -ltr' >> artifact/list.txt
-          echo 'hostname' >> artifact/hostname.txt
-      - name: upload single file
-        uses: actions/upload-artifact@v4
+      - name: checkout code
+        uses: actions/checkout@v6.0.2
+      - name: Setup Python
+        uses: actions/setup-python@v6.2.0
         with:
-          name: single_file
-          path: ./myartifact.txt
-    
-  job2:
-    name: job2
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-         - name: checking current directory
-           run: |
-               pwd
-               ls -ltr 
-         - name: download a single file artifact
-           uses: actions/download-artifact@v5.0.0
-           with:
-             name: single_file
-
-         - name: referring env variable
-           run: |
-               echo "{INFO} running deployment for $ENV_TYPE for user $APP_USER"
-               echo "{INFO} once deployed application is accessable on $APP_PORT"      
-         
-         - name: Referring Repo secret
-           run: |
-               echo " {INFP} Application password is ${{ secrets.APP_PASSWORD}}"
-
-  job3:
-      name: job3
-      runs-on: ubuntu-latest
-      steps:
-         - name: Referring in-built variables
-           run: |
-               echo "{INFO} Triggered by ${{ github.event_name}}"
-               echo "{INFO} new changes are added by ${{ github.actor_name }} in ${{github.ref_name }} branch".
-               echo "{INFO} Current step is running on ${{ runner.os}}".
-               echo "{INFO} current job id is ${{ job.check_run_id}}".
-      
-             
-  staging:
-      name: STAGE DEPLOYMENT
-      runs-on: ubuntu-latest
-      steps:
-        - name: Referring env variable
-          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
-        - name: Refferring env secrets
-          run: echo "{INFO} password for ${{ vars.USER }} IS ${{ vars.PASSWORD }}".
-          
-      environment:
-          name: STAGING
-      if: github.ref == 'refs/heads/dev'    
+          python-version: '3.10'
+      - name: Install Dependencies    
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
 
-       
-
-  production:
-      name: PRODUCTION DEPLOYMENT
-      runs-on: ubuntu-latest
-      steps:
-        - name: referring env variable
-          run: echo "{INFO} running deployment on ${{ vars.HOST }} using ${{ vars.USER }}".
-        - name: Refferring env secrets
-          run: echo "{INFO} password for ${{ vars.USER }} is ${{ vars.PASSWORD }}".
-          
-      environment:
-           name: PRODUCTION
-      if: github.ref == 'refs/heads/main'     
-     
-      
-        
-  
+      - name: Run Unit Tests
+        run: |
+          mkdir report/
+          pytest --junitxml=reports/unit-test-results.xml --cov=. --cov-report=xml --cov-report=term-missing -v
+      - name: upload code coverage report
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: unit-test-report
+          path: reports/
+  codeql: 
+   name: CodeQl security scan
+   runs-on: ubuntu-latest
+   permissions:
+     actions: read
+     contents: read        
+     security-events: write
+   strategy:
+     matrix:
+       language: ['python']
+   steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2   
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      - name: perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "security" 

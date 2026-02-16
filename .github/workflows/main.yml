@@ -3,6 +3,7 @@ name: my-first-workflow
 # to get triggered on every push in this repo on any branch  
 # python app in dev
 
+
 on:
   push: 
     branches: 
@@ -67,12 +68,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # Shallow clones  should be disabled for a better relevancy of analysis
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarcloud-github-action@v2   
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: sonar quality gate check         
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: sonar quality gate checking         
         uses: SonarSource/sonarqube-quality-gate-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

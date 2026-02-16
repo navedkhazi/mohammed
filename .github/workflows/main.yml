@@ -75,6 +75,6 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: sonar quality gate checking         
-        uses: SonarSource/sonarqube-quality-gate-action@v1
+        uses: SonarSource/sonarcloud-quality-gate-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

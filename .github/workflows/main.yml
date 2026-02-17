@@ -111,3 +111,29 @@ jobs:
         with: 
           name: thinknyx-app-image
           path: thinknyx-app.tar 
+    publish-Dockerhub:
+      name: publish to dockerhub
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: download docker image
+          uses: actions/download-artifact@v5.0.0
+          with:
+            name: thinknyx-app-image
+            path: .
+
+        - name: load docker image
+          run: docker load -i thinknyx-app.tar
+        - name: login to dockerhub
+          useds: docker/login-action@v3.0.0
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+        - name: tage docker image
+          run: |
+           IMAGE_TAGS=${{ needs.build.outputs.image-tag }}
+            docker image tag thinknyx-app:${IMAGE_TAGS} ${{ secrets.DOCKERHUB_USERNAME }}/thinknyx-app:${IMAGE_TAGS}
+        - name: push docker image  
+          run: |
+           IMAGE_TAGS=${{ needs.build.outputs.image-tag }}
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/thinknyx-app:${IMAGE_TAGS}

@@ -22,7 +22,7 @@ permissions:
         
 jobs:
   ci-pipeline-job:
-    uses: navedkhazi/reusable-workflows/.github/workflows/ci-pipeline.yml@main
+    uses: blacksafari/reusable-workflows/.github/workflows/ci-pipeline.yml@main
 
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
